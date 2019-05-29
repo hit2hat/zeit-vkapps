@@ -1,21 +1,39 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Panel, Spinner } from "@vkontakte/vkui";
+import { ConfigProvider, View, Panel, Spinner } from "@vkontakte/vkui";
 
-import HomePanel from "./panels/home";
+import AuthPanel from "./panels/Auth";
+import HomePanel from "./panels/Home";
+import ProfilePanel from "./panels/Profile";
+import ProjectPanel from "./panels/Project";
 
-const App = ({ activePanel, popout }) => {
+const App = ({ activePanel, popout, history, goBack }) => {
 	return (
-		<View activePanel={activePanel} popout={popout}>
-			<Panel id="init" children={<Spinner/>}/>
-			<HomePanel id="home" />
-		</View>
+		<ConfigProvider isWebView={true}>
+			<View
+				history={history}
+				onSwipeBack={goBack}
+				activePanel={activePanel}
+				popout={popout}
+			>
+				<Panel id="init" children={<Spinner/>}/>
+				<AuthPanel id="auth"/>
+				<HomePanel id="home"/>
+				<ProfilePanel id="profile"/>
+				<ProjectPanel id="project"/>
+			</View>
+		</ConfigProvider>
 	);
 };
 
 const mapState = (state) => ({
+	history: state.navigator.history,
 	activePanel: state.navigator.active,
 	popout: state.navigator.popout
 });
 
-export default connect(mapState)(App);
+const mapDispatch = (dispatch) => ({
+	goBack: dispatch.navigator.goBack
+});
+
+export default connect(mapState, mapDispatch)(App);
