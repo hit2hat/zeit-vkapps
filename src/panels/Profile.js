@@ -18,7 +18,7 @@ const Profile = ({ id, user, goBack }) => (
         <List>
             <Cell
                 children="Тарифный план"
-                indicator={user.billing.plan === "free" ? <Counter type="primary">Free</Counter> : <Counter type="prominent">Unlimited</Counter>}
+                indicator={user.billing.plan === "free" ? <Counter type="secondary">Free</Counter> : <Counter type="primary">Unlimited</Counter>}
             />
             <Cell
                 children="Email"
