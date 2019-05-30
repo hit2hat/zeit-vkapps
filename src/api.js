@@ -38,6 +38,11 @@ export const resolveDeploymentState = (state) => {
 export const getDeploymentsByProject = (projectId) => __requestBuilder("GET","v4/now/deployments", "deployments", { projectId });
 export const getDeploymentById = (deploymentId) => __requestBuilder("GET", "v9/now/deployments/" + deploymentId);
 
+/*
+    Domains section
+ */
+export const getDomains = () => __requestBuilder("GET", "v4/domains", "domains");
+
 // helpers
 const __requestBuilder = (type, method, responseField = null, params = {}) => new Promise((resolve, reject) => {
     const headers = new Headers();
