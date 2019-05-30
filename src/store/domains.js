@@ -19,6 +19,7 @@ const domains = {
     },
     effects: (dispatch) => ({
         async load() {
+            dispatch.domains.setLoading();
             getDomains()
                 .then((domains) => dispatch.domains.loaded(domains))
                 .catch(console.error);
