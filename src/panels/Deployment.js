@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { resolveDeploymentState } from "../api";
+import { resolveDeploymentState, deleteDeployment } from "../api";
 import FireOpener from "../fire-opener";
-import { Panel, PanelHeader, Group, Cell, Avatar } from "@vkontakte/vkui";
+import { Panel, PanelHeader, Group, Cell, Avatar, CellButton, ScreenSpinner } from "@vkontakte/vkui";
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 
-const Deployment = ({ id, deployment, goBack }) => {
+const Deployment = ({ id, deployment, goBack, setPopout, loadDeployments }) => {
+    if (deployment === null) return <Panel id={id}/>;
+
     const state = resolveDeploymentState(deployment.readyState);
     const createdAt = new Date();
     const [ ghAvatar, setGhAvatar ] = useState(null);
@@ -20,13 +22,25 @@ const Deployment = ({ id, deployment, goBack }) => {
 
     createdAt.setTime(deployment.createdAt);
 
+    const goDelete = () => {
+        setPopout(<ScreenSpinner/>);
+        deleteDeployment(deployment.id)
+            .then((result) => {
+                if (result.state === "DELETED") {
+                    loadDeployments();
+                    return goBack();
+                }
+            })
+            .catch(console.error);
+    };
+
     return (
         <Panel id={id}>
             <PanelHeader left={<PanelHeaderBack onClick={() => goBack()}/>}>{deployment.name}</PanelHeader>
             <Group title="Основная информация">
                 <Cell
                     expandable
-                    children="Основной URL"
+                    children="URL"
                     indicator={deployment.url}
                     onClick={() => FireOpener("https://" + deployment.url)}
                 />
@@ -50,6 +64,12 @@ const Deployment = ({ id, deployment, goBack }) => {
                     children="Регионы размещения"
                     indicator={deployment.regions.join(", ")}
                 />
+                <CellButton
+                    children="Удалить"
+                    align="center"
+                    level="danger"
+                    onClick={goDelete}
+                />
             </Group>
             {deployment.meta.githubDeployment === "1" ?
                 <Group title="GitHub">
@@ -64,18 +84,21 @@ const Deployment = ({ id, deployment, goBack }) => {
                 </Group>
                 : null
             }
-            <Group title="Дополнительный имена (Aliases)">
+            {deployment.alias.length > 0 ?
+                <Group title="Дополнительный имена (Aliases)">
                 {deployment.alias.map((a, key) => {
                     return (
                         <Cell
                             expandable
                             key={key}
-                            children={a}
-                            onClick={() => FireOpener("https://" + a)}
+                            children={a.alias}
+                            onClick={() => FireOpener("https://" + a.alias)}
                         />
                     );
                 })}
-            </Group>
+                </Group>
+                : null
+            }
         </Panel>
     );
 };
@@ -85,7 +108,9 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = (dispatch) => ({
-    goBack: dispatch.navigator.goBack
+    goBack: dispatch.navigator.goBack,
+    setPopout: dispatch.navigator.setPopout,
+    loadDeployments: dispatch.deployments.load
 });
 
 export default connect(mapState, mapDispatch)(Deployment);

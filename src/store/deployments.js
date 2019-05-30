@@ -1,5 +1,5 @@
 import React from "react";
-import { getDeploymentsByProject, getDeploymentById } from "../api";
+import { getDeploymentsByProject, getDeploymentById, getAliasesByDeployment } from "../api";
 import { ScreenSpinner } from "@vkontakte/vkui";
 
 const deployments = {
@@ -29,8 +29,12 @@ const deployments = {
         selectDeployment(deployment_id, state) {
             dispatch.navigator.setPopout(<ScreenSpinner/>);
             getDeploymentById(state.deployments.list[deployment_id].uid).then((deployment) => {
-                dispatch.deployments.select(deployment);
-                dispatch.navigator.goForward("deployment");
+                getAliasesByDeployment(state.deployments.list[deployment_id].uid)
+                    .then((aliases) => {
+                        console.log(aliases);
+                        dispatch.deployments.select({ ...deployment, alias: aliases });
+                        dispatch.navigator.goForward("deployment");
+                    });
             });
         }
     })

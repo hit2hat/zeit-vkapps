@@ -38,11 +38,17 @@ export const resolveDeploymentState = (state) => {
 };
 export const getDeploymentsByProject = (projectId) => __requestBuilder("GET","v4/now/deployments", "deployments", { projectId });
 export const getDeploymentById = (deploymentId) => __requestBuilder("GET", "v9/now/deployments/" + deploymentId);
+export const deleteDeployment = (deploymentId) => __requestBuilder("DELETE", "/v9/now/deployments/" + deploymentId);
 
 /*
     Domains section
  */
 export const getDomains = () => __requestBuilder("GET", "v4/domains", "domains");
+
+/*
+    Aliases section
+ */
+export const getAliasesByDeployment = (deploymentId) => __requestBuilder("GET", "/v2/now/deployments/" + deploymentId + "/aliases", "aliases");
 
 // helpers
 const __requestBuilder = (type, method, responseField = null, params = {}) => new Promise((resolve, reject) => {
