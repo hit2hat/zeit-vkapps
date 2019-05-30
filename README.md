@@ -17,6 +17,7 @@ For view this app you need to open this [link](https://vk.com/app7002197)
 *   Rematch
 *   VKUI
 *   VK Connect Promise
+*   Zeit Now
 
 ## Developers
 *   [Stepan Novozhilov](https://vk.me/hit2hat)
