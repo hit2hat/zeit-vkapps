@@ -16,7 +16,7 @@ const App = ({ activePanel, popout, history, goBack }) => {
 				activePanel={activePanel}
 				popout={popout}
 			>
-				<Panel id="init" children={<Spinner/>}/>
+				<Panel id="init" theme="white" children={<Spinner/>}/>
 				<AuthPanel id="auth"/>
 				<HomePanel id="home"/>
 				<ProfilePanel id="profile"/>
