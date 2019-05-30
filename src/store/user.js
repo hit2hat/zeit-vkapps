@@ -11,7 +11,6 @@ const user = {
     effects: (dispatch) => ({
         async load() {
             API.getProfile().then(async (profile) => {
-                console.log(profile);
                 dispatch.user.loaded(profile);
                 store.dispatch.projects.load();
                 return store.dispatch.navigator.goForce("home");

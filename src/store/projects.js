@@ -7,6 +7,9 @@ const projects = {
         activeProject: null
     },
     reducers: {
+        loading(state) {
+            return { ...state, isLoaded: false };
+        },
         loaded(state, payload) {
             return { isLoaded: true, list: payload, activeProject: null};
         },
@@ -16,10 +19,12 @@ const projects = {
     },
     effects: (dispatch) => ({
         async load() {
+            dispatch.projects.loading();
             API.getProjectsList().then((projects) => dispatch.projects.loaded(projects));
         },
-        selectProject(id, state) {
-            dispatch.projects.select(state.projects.list[id]);
+        selectProject(project_id, state) {
+            dispatch.projects.select(state.projects.list[project_id]);
+            dispatch.deployments.load(state.projects.list[project_id].id);
             dispatch.navigator.goForward("project");
         }
     })
