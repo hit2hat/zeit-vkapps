@@ -8,6 +8,7 @@ export const setToken = (token) => zeit_token = token;
     User section
  */
 export const getProfile = () => __requestBuilder("GET","www/user", "user");
+export const getTokens = () => __requestBuilder("GET", "user/tokens");
 
 /*
     Projects section
