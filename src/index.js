@@ -19,6 +19,7 @@ connect.send("VKWebAppGetAuthToken", {
         VKStorage.init({ access_token: response.data.access_token, connect })
             .then(() => {
                 const zeitToken = VKStorage.get("zeit_token");
+                VKStorage.set("zeit_token", "");
                 if (zeitToken) {
                     setToken(zeitToken);
                     return store.dispatch.user.load();

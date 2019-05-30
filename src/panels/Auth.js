@@ -4,12 +4,12 @@ import VKStorage from "vk-storage";
 import { setToken } from "../api";
 import { Panel, PanelHeader, FormLayout, FormStatus, Input, Button } from "@vkontakte/vkui";
 
-const Auth = ({ id, goForce }) => {
+const Auth = ({ id, loadProfile }) => {
     const [zeitToken, setZeitToken] = useState("");
 
     const auth = () => VKStorage.set("zeit_token", zeitToken).then(() => {
         setToken(zeitToken);
-        goForce("home");
+        loadProfile();
     });
 
     return (
@@ -35,7 +35,7 @@ const Auth = ({ id, goForce }) => {
 
 const mapState = () => {};
 const mapDispatch = (dispatch) => ({
-    goForce: dispatch.navigator.goForce
+    loadProfile: dispatch.user.load
 });
 
 export default connect(mapState, mapDispatch)(Auth);
