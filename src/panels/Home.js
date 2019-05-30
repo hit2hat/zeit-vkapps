@@ -14,7 +14,7 @@ const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goFo
                     description={user.email}
                     before={<Avatar src={"https://zeit.co/api/www/avatar/" + user.avatar}/>}
                     onClick={() => goForward("profile")}
-                    indicator={user.billing.plan === "free" ? <Counter type="primary">Free</Counter> : <Counter type="prominent">Unlimited</Counter>}
+                    indicator={user.billing.plan === "free" ? <Counter type="secondary">Free</Counter> : <Counter type="primary">Unlimited</Counter>}
                 />
             </Group>
             <Group title="Домены">
