@@ -13,6 +13,7 @@ const user = {
             getProfile().then(async (profile) => {
                 dispatch.user.loaded(profile);
                 store.dispatch.projects.load();
+                store.dispatch.domains.load();
                 return store.dispatch.navigator.goForce("home");
             })
                 .catch(() => dispatch.navigator.goForce("auth"));

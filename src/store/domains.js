@@ -7,6 +7,9 @@ const domains = {
         activeDomain: null
     },
     reducers: {
+        setLoading(state) {
+            return { ...state, isLoaded: false };
+        },
         loaded(state, payload) {
             return { isLoaded: true, list: payload, activeDomain: null };
         },
