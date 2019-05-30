@@ -5,7 +5,7 @@ import connect from "@vkontakte/vkui-connect-promise";
 import VKStorage from "vk-storage";
 import "@vkontakte/vkui/dist/vkui.css";
 
-import * as API from "./api";
+import { setToken } from "./api";
 import App from "./App";
 import store from "./store";
 
@@ -18,9 +18,9 @@ connect.send("VKWebAppGetAuthToken", {
     .then((response) => {
         VKStorage.init({ access_token: response.data.access_token, connect })
             .then(() => {
-                const zeit_token = VKStorage.get("zeit_token");
-                if (zeit_token) {
-                    API.setToken(zeit_token);
+                const zeitToken = VKStorage.get("zeit_token");
+                if (zeitToken) {
+                    setToken(zeitToken);
                     return store.dispatch.user.load();
                 } else {
                     return store.dispatch.navigator.goForce("auth");

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import VKStorage from "vk-storage";
+import { setToken } from "../api";
 import { Panel, PanelHeader, FormLayout, FormStatus, Input, Button } from "@vkontakte/vkui";
 
 const Auth = ({ id, goForce }) => {
     const [zeitToken, setZeitToken] = useState("");
 
-    const auth = () => VKStorage.set("zeit_token", zeitToken).then(() => goForce("home"));
+    const auth = () => VKStorage.set("zeit_token", zeitToken).then(() => {
+        setToken(zeitToken);
+        goForce("home");
+    });
 
     return (
         <Panel id={id} theme="white">

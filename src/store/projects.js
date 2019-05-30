@@ -1,4 +1,4 @@
-import * as API from "../api";
+import { getProjectsList } from "../api";
 
 const projects = {
     state: {
@@ -20,7 +20,7 @@ const projects = {
     effects: (dispatch) => ({
         async load() {
             dispatch.projects.loading();
-            API.getProjectsList().then((projects) => dispatch.projects.loaded(projects));
+            getProjectsList().then((projects) => dispatch.projects.loaded(projects));
         },
         selectProject(project_id, state) {
             dispatch.projects.select(state.projects.list[project_id]);

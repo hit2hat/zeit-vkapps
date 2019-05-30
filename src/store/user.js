@@ -1,4 +1,4 @@
-import * as API from "../api";
+import { getProfile } from "../api";
 import store from "./index";
 
 const user = {
@@ -10,7 +10,7 @@ const user = {
     },
     effects: (dispatch) => ({
         async load() {
-            API.getProfile().then(async (profile) => {
+            getProfile().then(async (profile) => {
                 dispatch.user.loaded(profile);
                 store.dispatch.projects.load();
                 return store.dispatch.navigator.goForce("home");
