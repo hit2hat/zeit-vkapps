@@ -1,5 +1,5 @@
 import React from "react";
-import { getDeploymentsByProject, getDeploymentById, getAliasesByDeployment } from "../api";
+import { getDeploymentsByProject, getDeploymentById, getAliasesByDeployment, deleteDeployment } from "../api";
 import { ScreenSpinner } from "@vkontakte/vkui";
 
 const deployments = {
@@ -17,6 +17,9 @@ const deployments = {
         },
         select(state, payload) {
             return { ...state, activeDeployment: payload };
+        },
+        delete(state, payload) {
+            return { ...state, list: state.list.filter((deployment) => deployment.id !== payload) };
         }
     },
     effects: (dispatch) => ({
@@ -36,6 +39,19 @@ const deployments = {
                         dispatch.navigator.goForward("deployment");
                     });
             });
+        },
+        deleteDeployment(deployment_id) {
+            dispatch.navigator.setPopout(<ScreenSpinner/>);
+            deleteDeployment(deployment_id)
+                .then((result) => {
+                    if (result.state === "DELETED") {
+                        dispatch.deployments.delete(deployment_id);
+                        return dispatch.navigator.goBack();
+                    } else {
+                        dispatch.navigator.setPopout(null);
+                    }
+                })
+                .catch(() => dispatch.navigator.setPopout(null));
         }
     })
 };

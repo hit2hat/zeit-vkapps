@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { resolveDeploymentState, deleteDeployment } from "../api";
+import { resolveDeploymentState } from "../api";
 import FireOpener from "../fire-opener";
-import { Panel, PanelHeader, Group, Cell, Avatar, CellButton, ScreenSpinner } from "@vkontakte/vkui";
+import { Panel, PanelHeader, Group, Cell, Avatar, CellButton } from "@vkontakte/vkui";
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 
-const Deployment = ({ id, deployment, goBack, setPopout, reloadDeployments }) => {
+const Deployment = ({ id, deployment, goBack, deleteDeployment }) => {
     if (deployment === null) return <Panel id={id}/>;
 
     const state = resolveDeploymentState(deployment.readyState);
@@ -21,18 +21,6 @@ const Deployment = ({ id, deployment, goBack, setPopout, reloadDeployments }) =>
     }
 
     createdAt.setTime(deployment.createdAt);
-
-    const goDelete = () => {
-        setPopout(<ScreenSpinner/>);
-        deleteDeployment(deployment.id)
-            .then((result) => {
-                if (result.state === "DELETED") {
-                    reloadDeployments();
-                    return goBack();
-                }
-            })
-            .catch(console.error);
-    };
 
     return (
         <Panel id={id}>
@@ -68,7 +56,7 @@ const Deployment = ({ id, deployment, goBack, setPopout, reloadDeployments }) =>
                     children="Удалить"
                     align="center"
                     level="danger"
-                    onClick={goDelete}
+                    onClick={() => deleteDeployment(deployment.id)}
                 />
             </Group>
             {deployment.meta.githubDeployment === "1" ?
@@ -109,8 +97,7 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
     goBack: dispatch.navigator.goBack,
-    setPopout: dispatch.navigator.setPopout,
-    reloadDeployments: dispatch.deployments.load
+    deleteDeployment: dispatch.deployments.deleteDeployment
 });
 
 export default connect(mapState, mapDispatch)(Deployment);
