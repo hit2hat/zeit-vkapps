@@ -19,7 +19,7 @@ const deployments = {
             return { ...state, activeDeployment: payload };
         },
         delete(state, payload) {
-            return { ...state, list: state.list.filter((deployment) => deployment.id !== payload) };
+            return { ...state, list: state.list.filter((deployment) => deployment.uid !== payload) };
         }
     },
     effects: (dispatch) => ({
