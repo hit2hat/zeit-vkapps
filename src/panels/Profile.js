@@ -1,6 +1,7 @@
 import React from "react";
+import { zeit_token } from "../api";
 import { connect } from "react-redux";
-import { Panel, PanelHeader, List, Cell, Avatar, Div } from "@vkontakte/vkui";
+import { Panel, PanelHeader, List, Cell, Avatar, Div, Group, Spinner } from "@vkontakte/vkui";
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 
@@ -24,6 +25,22 @@ const Profile = ({ id, user, goBack }) => (
                 asideContent={user.email}
             />
         </List>
+        <Group title="Активные сессии">
+            {
+                user.tokens ?
+                    user.tokens.tokens.map((token, key) => {
+                        if (token.id === user.tokens.testingTokenId) return null;
+                        return (
+                            <Cell
+                                key={key}
+                                children={token.name}
+                                indicator={token.token === zeit_token ? <Counter type="primary" children="Это приложение" /> : null}
+                            />
+                        );
+                    })
+                : <div style={{ paddingBottom: 15 }}><Spinner/></div>
+            }
+        </Group>
     </Panel>
 );
 

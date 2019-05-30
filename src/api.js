@@ -1,6 +1,6 @@
 const endpoint = "https://api.zeit.co/";
 
-let zeit_token = "";
+export let zeit_token = "";
 
 export const setToken = (token) => zeit_token = token;
 
