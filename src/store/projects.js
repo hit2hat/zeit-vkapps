@@ -22,9 +22,9 @@ const projects = {
             dispatch.projects.loading();
             getProjectsList().then((projects) => dispatch.projects.loaded(projects));
         },
-        selectProject(project_id, state) {
-            dispatch.projects.select(state.projects.list[project_id]);
-            dispatch.deployments.load(state.projects.list[project_id].id);
+        selectProject(id, state) {
+            dispatch.projects.select(state.projects.list[id]);
+            dispatch.deployments.load(state.projects.list[id].id);
             dispatch.navigator.goForward("project");
         }
     })
