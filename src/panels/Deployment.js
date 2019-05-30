@@ -6,7 +6,7 @@ import { Panel, PanelHeader, Group, Cell, Avatar, CellButton, ScreenSpinner } fr
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 import PanelHeaderBack from '@vkontakte/vkui/dist/components/PanelHeaderBack/PanelHeaderBack';
 
-const Deployment = ({ id, deployment, goBack, setPopout, loadDeployments }) => {
+const Deployment = ({ id, deployment, goBack, setPopout, reloadDeployments }) => {
     if (deployment === null) return <Panel id={id}/>;
 
     const state = resolveDeploymentState(deployment.readyState);
@@ -27,7 +27,7 @@ const Deployment = ({ id, deployment, goBack, setPopout, loadDeployments }) => {
         deleteDeployment(deployment.id)
             .then((result) => {
                 if (result.state === "DELETED") {
-                    loadDeployments();
+                    reloadDeployments();
                     return goBack();
                 }
             })
@@ -110,7 +110,7 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
     goBack: dispatch.navigator.goBack,
     setPopout: dispatch.navigator.setPopout,
-    loadDeployments: dispatch.deployments.load
+    reloadDeployments: dispatch.deployments.load
 });
 
 export default connect(mapState, mapDispatch)(Deployment);
