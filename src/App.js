@@ -7,6 +7,7 @@ import HomePanel from "./panels/Home";
 import ProfilePanel from "./panels/Profile";
 import ProjectPanel from "./panels/Project";
 import DeploymentPanel from "./panels/Deployment";
+import DomainPanel from "./panels/Domain";
 
 const App = ({ activePanel, popout, history, goBack }) => {
 	return (
@@ -23,6 +24,7 @@ const App = ({ activePanel, popout, history, goBack }) => {
 				<ProfilePanel id="profile"/>
 				<ProjectPanel id="project"/>
 				<DeploymentPanel id="deployment"/>
+				<DomainPanel id="domain"/>
 			</View>
 		</ConfigProvider>
 	);
