@@ -5,7 +5,6 @@ Zeit client based on VK Apps platform and allowing people to easily manage their
 ## Open app
 For view this app you need to open this [link](https://vk.com/app7002197)
 
-
 ## How to run own copy
 *   Clone this repo
 *   Use `yarn` or `npm i` for install dependencies
