@@ -23,7 +23,7 @@ const Project = ({ id, project, deployments, deploymentLoaded, goBack, selectDep
                                 key={key}
                                 children={deployment.url}
                                 indicator={<Counter type={state.color}>{state.text}</Counter>}
-                                description={"Развернуто: " + createdAt.toLocaleString("ru-RU")}
+                                description={"Создано: " + createdAt.toLocaleString("ru-RU")}
                                 onClick={() => selectDeployment(key)}
                             />
                         );
