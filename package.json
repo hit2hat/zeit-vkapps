@@ -1,7 +1,7 @@
 {
   "name": "zeit-vkapps",
   "version": "1.0.0",
-  "homepage": "https://hit2hat.github.io/zeit-vkapps/",
+  "homepage": "https://zeit-vkapps.hit2hat.now.sh/",
   "description": "",
   "main": "index.js",
   "scripts": {
