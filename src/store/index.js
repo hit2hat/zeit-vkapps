@@ -4,12 +4,14 @@ import navigator from "./navigator";
 import user from "./user";
 import projects from "./projects";
 import deployments from "./deployments";
+import domains from "./domains";
 
 const models = {
     navigator,
     user,
     projects,
-    deployments
+    deployments,
+    domains
 };
 
 const store = init({
