@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Panel, PanelHeader, Group, Cell, Avatar, Spinner } from "@vkontakte/vkui";
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 
-const Home = ({ id, user, projects, projectsLoaded, goForward, selectProject }) => {
+const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goForward, selectProject, selectDomain }) => {
     return (
         <Panel id={id}>
             <PanelHeader>Zeit for VK [Beta]</PanelHeader>
@@ -16,6 +16,28 @@ const Home = ({ id, user, projects, projectsLoaded, goForward, selectProject }) 
                     onClick={() => goForward("profile")}
                     indicator={user.billing.plan === "free" ? <Counter type="primary">Free</Counter> : <Counter type="prominent">Unlimited</Counter>}
                 />
+            </Group>
+            <Group title="Домены">
+                {
+                    domainsLoaded ?
+                        domains.map((domain, key) => {
+                            return (
+                                <Cell
+                                    expandable
+                                    key={key}
+                                    children={domain.name}
+                                    indicator={
+                                        <Counter
+                                            type={domain.verified ? "primary" : "prominent"}
+                                            children={domain.verified ? "Подтвержден" : "Не подтвержден"}
+                                        />
+                                    }
+                                    onClick={() => selectDomain(key)}
+                                />
+                            );
+                        })
+                        : <div style={{ paddingBottom: 15 }}><Spinner/></div>
+                }
             </Group>
             <Group title="Проекты">
                 {
@@ -44,12 +66,15 @@ const Home = ({ id, user, projects, projectsLoaded, goForward, selectProject }) 
 const mapState = (state) => ({
     user: state.user,
     projectsLoaded: state.projects.isLoaded,
-    projects: state.projects.list
+    projects: state.projects.list,
+    domainsLoaded: state.domains.isLoaded,
+    domains: state.domains.list
 });
 
 const mapDispatch = (dispatch) => ({
     goForward: dispatch.navigator.goForward,
-    selectProject: dispatch.projects.selectProject
+    selectProject: dispatch.projects.selectProject,
+    selectDomain: dispatch.domains.selectDomain
 });
 
 export default connect(mapState, mapDispatch)(Home);
