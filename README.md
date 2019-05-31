@@ -19,7 +19,7 @@ For view this app you need to open this [link](https://vk.com/app7002197)
 *   Zeit Now
 
 ## Developers
-*   [Stepan Novozhilov](https://vk.me/hit2hat)
+*   [Stepan Novozhilov](https://vk.me/this.state.user)
 
 ## Links
 *   [App in VK](https://vk.com/app7002197)
