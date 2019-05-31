@@ -8,7 +8,7 @@
     "start": "cross-env PORT=10888 react-scripts start",
     "build": "react-scripts build",
     "now-dev": "cross-env PORT=10888 react-scripts start",
-    "now-build": "cross-env REACT_APP_VERSION=NOW_GITHUB_COMMIT_SHA react-scripts build"
+    "now-build": "REACT_APP_VERSION=$NOW_GITHUB_COMMIT_SHA react-scripts build"
   },
   "keywords": [],
   "author": "hit2hat",
