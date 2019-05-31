@@ -34,7 +34,6 @@ const deployments = {
             getDeploymentById(state.deployments.list[deployment_id].uid).then((deployment) => {
                 getAliasesByDeployment(state.deployments.list[deployment_id].uid)
                     .then((aliases) => {
-                        console.log(aliases);
                         dispatch.deployments.select({ ...deployment, alias: aliases });
                         dispatch.navigator.goForward("deployment");
                     });
