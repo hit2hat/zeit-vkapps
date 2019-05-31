@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Panel, PanelHeader, Group, Cell, Avatar, Spinner } from "@vkontakte/vkui";
+import { Panel, PanelHeader, Group, Cell, Avatar, Spinner, HeaderButton } from "@vkontakte/vkui";
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
+
+import Icon24Info from '@vkontakte/icons/dist/24/info';
 
 const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goForward, selectProject, selectDomain }) => {
     return (
         <Panel id={id}>
-            <PanelHeader>Zeit for VK [Beta]</PanelHeader>
+            <PanelHeader
+                left={
+                    <HeaderButton onClick={() => goForward("about")}>
+                        <Icon24Info/>
+                    </HeaderButton>
+                }
+            >
+                Zeit for VK [Beta]
+            </PanelHeader>
             <Group title="Мой профиль">
                 <Cell
                     expandable
