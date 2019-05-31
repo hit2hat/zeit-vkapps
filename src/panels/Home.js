@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Panel, PanelHeader, Group, Cell, Avatar, Spinner, HeaderButton } from "@vkontakte/vkui";
+import { Panel, PanelHeader, Group, Cell, Avatar, Spinner, HeaderButton, PullToRefresh } from "@vkontakte/vkui";
 import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 
 import Icon24Info from '@vkontakte/icons/dist/24/info';
 
-const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goForward, selectProject, selectDomain }) => {
+const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goForward, selectProject, selectDomain, reloadAll }) => {
     return (
         <Panel id={id}>
             <PanelHeader
@@ -17,58 +17,62 @@ const Home = ({ id, user, projects, projectsLoaded, domains, domainsLoaded, goFo
             >
                 Zeit for VK [Beta]
             </PanelHeader>
-            <Group title="Мой профиль">
-                <Cell
-                    expandable
-                    children={user.name}
-                    description={user.email}
-                    before={<Avatar src={"https://zeit.co/api/www/avatar/" + user.avatar}/>}
-                    onClick={() => goForward("profile")}
-                    indicator={user.billing.plan === "free" ? <Counter type="secondary">Free</Counter> : <Counter type="primary">Unlimited</Counter>}
-                />
-            </Group>
-            <Group title="Домены">
-                {
-                    domainsLoaded ?
-                        domains.map((domain, key) => {
-                            return (
-                                <Cell
-                                    expandable
-                                    key={key}
-                                    children={domain.name}
-                                    indicator={
-                                        <Counter
-                                            type={domain.verified ? "primary" : "prominent"}
-                                            children={domain.verified ? "Подтвержден" : "Не подтвержден"}
+            <PullToRefresh isFetching={!domainsLoaded || !projectsLoaded} onRefresh={reloadAll}>
+                <div>
+                    <Group title="Мой профиль">
+                        <Cell
+                            expandable
+                            children={user.name}
+                            description={user.email}
+                            before={<Avatar src={"https://zeit.co/api/www/avatar/" + user.avatar}/>}
+                            onClick={() => goForward("profile")}
+                            indicator={user.billing.plan === "free" ? <Counter type="secondary">Free</Counter> : <Counter type="primary">Unlimited</Counter>}
+                        />
+                    </Group>
+                    <Group title="Домены">
+                        {
+                            domainsLoaded ?
+                                domains.map((domain, key) => {
+                                    return (
+                                        <Cell
+                                            expandable
+                                            key={key}
+                                            children={domain.name}
+                                            indicator={
+                                                <Counter
+                                                    type={domain.verified ? "primary" : "prominent"}
+                                                    children={domain.verified ? "Подтвержден" : "Не подтвержден"}
+                                                />
+                                            }
+                                            onClick={() => selectDomain(key)}
                                         />
-                                    }
-                                    onClick={() => selectDomain(key)}
-                                />
-                            );
-                        })
-                        : <div style={{ paddingBottom: 15 }}><Spinner/></div>
-                }
-            </Group>
-            <Group title="Проекты">
-                {
-                    projectsLoaded ?
-                        projects.map((project, key) => {
-                            const updatedAt = new Date();
-                            updatedAt.setTime(project.updatedAt);
+                                    );
+                                })
+                                : <div style={{ paddingBottom: 15 }}><Spinner/></div>
+                        }
+                    </Group>
+                    <Group title="Проекты">
+                        {
+                            projectsLoaded ?
+                                projects.map((project, key) => {
+                                    const updatedAt = new Date();
+                                    updatedAt.setTime(project.updatedAt);
 
-                            return (
-                                <Cell
-                                    expandable
-                                    key={project.id}
-                                    children={project.name}
-                                    description={"Последнее обновление: " + updatedAt.toLocaleString("ru-RU")}
-                                    onClick={() => selectProject(key)}
-                                />
-                            );
-                        })
-                        : <div style={{ paddingBottom: 15 }}><Spinner/></div>
-                }
-            </Group>
+                                    return (
+                                        <Cell
+                                            expandable
+                                            key={project.id}
+                                            children={project.name}
+                                            description={"Последнее обновление: " + updatedAt.toLocaleString("ru-RU")}
+                                            onClick={() => selectProject(key)}
+                                        />
+                                    );
+                                })
+                                : <div style={{ paddingBottom: 15 }}><Spinner/></div>
+                        }
+                    </Group>
+                </div>
+            </PullToRefresh>
         </Panel>
     );
 };
@@ -84,7 +88,11 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
     goForward: dispatch.navigator.goForward,
     selectProject: dispatch.projects.selectProject,
-    selectDomain: dispatch.domains.selectDomain
+    selectDomain: dispatch.domains.selectDomain,
+    reloadAll: () => {
+        dispatch.projects.load();
+        dispatch.domains.load();
+    }
 });
 
 export default connect(mapState, mapDispatch)(Home);
